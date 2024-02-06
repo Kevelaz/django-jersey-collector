@@ -19,6 +19,19 @@ class JerseyDetail(generics.RetrieveUpdateDestroyAPIView):
   serializer_class = JerseySerializer
   lookup_field = 'id'
 
+  def retrieve(self, request, *args, **kwargs):
+    instance = self.get_object()
+    serializer = self.get_serializer(instance)
+
+    # Get the list of toys not associated with this cat
+    clubs_not_associated = Club.objects.exclude(id__in=instance.clubs.all())
+    clubs_serializer = ClubSerializer(clubs_not_associated, many=True)
+
+    return Response({
+        'jersey': serializer.data,
+        'clubs_not_associated': clubs_serializer.data
+    })
+
 class TeamListCreate(generics.ListCreateAPIView):
   serializer_class = TeamSerializer
   
@@ -46,3 +59,10 @@ class ClubDetail(generics.RetrieveUpdateDestroyAPIView):
   queryset = Club.objects.all()
   serializer_class = ClubSerializer
   lookup_field = 'id'
+
+class AddClubToJersey(APIView):
+  def post(self, request, jersey_id, club_id):
+    jersey = Jersey.objects.get(id=jersey_id)
+    club = Club.objects.get(id=club_id)
+    jersey.clubs.add(club)
+    return Response({'message': f'{club.name} added to Jersey info {jersey.name}'})

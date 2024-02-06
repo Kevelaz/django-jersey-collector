@@ -1,6 +1,6 @@
 from django.urls import path
 # import Home view from the views file
-from .views import Home, JerseyList, JerseyDetail, TeamListCreate, TeamDetail, ClubListCreate, ClubDetail
+from .views import Home, JerseyList, JerseyDetail, TeamListCreate, TeamDetail, ClubListCreate, ClubDetail, AddClubToJersey
 
 urlpatterns = [
   path('', Home.as_view(), name='home'),
@@ -9,6 +9,7 @@ urlpatterns = [
   path('jerseys/<int:jersey_id>/teams/', TeamListCreate.as_view(), name='team-list-create'),
 	path('jerseys/<int:jersey_id>/teams/<int:id>/', TeamDetail.as_view(), name='team-detail'),
   path('clubs/', ClubListCreate.as_view(), name='club-list-create'),
-  path('clubs/<int:id>/', ClubDetail.as_view(), name='club-detail')
+  path('clubs/<int:id>/', ClubDetail.as_view(), name='club-detail'),
+  path('jerseys/<int:jersey_id>/add_club/<int:club_id>/', AddClubToJersey.as_view(), name='add-club-to-jersey')
 ]
 
