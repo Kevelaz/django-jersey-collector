@@ -19,3 +19,9 @@ class Team(models.Model):
 
   def __str__(self):
     return f"{self.name}"
+
+class Club(models.Model):
+  name = models.CharField(max_length=50, default = '')
+  year_founded = models.IntegerField()
+  country_of_origin = models.CharField()
+  league_name = models.CharField()

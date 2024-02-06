@@ -1,8 +1,8 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import generics
-from .models import Jersey, Team
-from .serializers import JerseySerializer, TeamSerializer
+from .models import Jersey, Team,Club
+from .serializers import JerseySerializer, TeamSerializer, ClubSerializer
 
 # Define the home view
 class Home(APIView):
@@ -37,3 +37,12 @@ class TeamDetail(generics.RetrieveUpdateDestroyAPIView):
   def get_queryset(self):
     jersey_id = self.kwargs['jersey_id']
     return Team.objects.filter(jersey_id=jersey_id) 
+
+class ClubListCreate(generics.ListCreateAPIView):
+  queryset = Club.objects.all()
+  serializer_class = ClubSerializer
+
+class ClubDetail(generics.RetrieveUpdateDestroyAPIView):
+  queryset = Club.objects.all()
+  serializer_class = ClubSerializer
+  lookup_field = 'id'
